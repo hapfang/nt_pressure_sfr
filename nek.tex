@@ -2,7 +2,17 @@
 \section{Numerical Methods}
 \label{sec:nekrs}
 
-Nek5000 is an open source CFD code based on the spectral element method (SEM)~\citep{Patera1984} with a long history of use in reactor thermal-hydraulics research~\citep{Merzari2019a}. SEM combines the accuracy of spectral methods with the domain flexibility of the finite element method. In Nek5000 calculations, the domain is discretized into E curvilinear hexahedral elements, in which the solution is represented as a tensor product of Nth-order Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodal points, leading to a total number of grid points n=EN3. Nek5000 was designed from the outset of distributed-memory platforms. It is highly parallel and has been previously applied to a wide range of problems to gain unprecedented insight into the physics of turbulence in complex flows~\citep{Merzari2019,Martinez2019}. The time-stepping scheme of Nek5000 is semi-implicit: the diffusion terms of the Navier-Stocks equations are treated implicitly by using a kth-order backward difference formula (BDFk), while nonlinear terms are approximated by a kth-order extrapolation (EXTk)~\citep{Ho1989}. Nek5000 was originally developed for simulating turbulent flows with very high fidelity, i.e. DNS and LES. More recently, the RANS capability has been implemented in the form of the regularized versions of the $k-\omega$ class of models~\citep{Tomboulides2018}. Both LES and DNS require proper resolution of turbulent length scales, which can be very expensive computationally. By using a RANS model, a reasonable balance of computational cost and accuracy is achieved for the flow problems encountered in SFR designs. 
+Nek5000 is an open source CFD code based on the spectral element method (SEM)~\citep{Patera1984} with a long history of use in reactor thermal-hydraulics research~\citep{Merzari2019a}.
+SEM combines the accuracy of spectral methods with the domain flexibility of the finite element method.
+In Nek5000 calculations, the domain is discretized into E curvilinear hexahedral elements, in which the solution is represented as a tensor product of Nth-order Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodal points, leading to a total number of grid points n=EN3.
+Nek5000 was designed from the outset of distributed-memory platforms.
+It is highly parallel and has been previously applied to a wide range of problems to gain unprecedented insight into the physics of turbulence in complex flows~\citep{Merzari2019,Martinez2019}.
+The time-stepping scheme of Nek5000 is semi-implicit: the diffusion terms of the Navier-Stocks equations are treated implicitly by using a kth-order backward difference formula (BDFk), while nonlinear terms are approximated by a kth-order extrapolation (EXTk)~\citep{Ho1989}.
+Nek5000 was originally developed for simulating turbulent flows with very high fidelity, i.e.\ DNS and LES.
+More recently, the RANS capability has been implemented in the form of the regularized versions of the $k-\omega$ class of models~\citep{Tomboulides2018}.
+Both LES and DNS require proper resolution of turbulent length scales, which can be very expensive computationally.
+By using a RANS model, a reasonable balance of computational cost and accuracy is achieved for the flow problems encountered in SFR designs.
+
 
 \subsection{Governing equations}
 \label{sec:nek1}
@@ -16,39 +26,63 @@ For incompressible flow with RANS turbulence model, the Navier-Stokes equations 
  \rho \left[ \frac{\partial u_i}{\partial t} + \frac{\partial }{\partial x_j}(u_i u_j) \right] =  -\frac{\partial p}{\partial x_i} + \frac{\partial }{\partial x_j}\left[(\mu + \mu_t)( \frac{\partial u_i}{\partial x_j} + \frac{\partial u_j}{\partial x_i})\right] + F_i
 \end{equation}
 
-where the turbulent viscosity $\mu_t$ is calculated from the turbulent scalars based on the $k-\omega$ model. 
+where the turbulent viscosity $\mu_t$ is calculated from the turbulent scalars based on the $k-\omega$ model.
  
-The formulation used for this work solved the dimensionless forms of the RANS equations. To simulate fluid flow in Nek5000, the fluid properties must be given, such as fluid density, dynamic viscosity. For an incompressible flow model, these properties are assumed to be constant and only dimensionless groups are necessary as input to the code. These include a non-dimensional density of 1 and the Reynolds number given by
+The formulation used for this work solved the dimensionless forms of the RANS equations.
+To simulate fluid flow in Nek5000, the fluid properties must be given, such as fluid density, dynamic viscosity.
+For an incompressible flow model, these properties are assumed to be constant and only dimensionless groups are necessary as input to the code.
+These include a non-dimensional density of 1 and the Reynolds number given by
 
 \begin{equation}
     Re = \frac{\rho U_0 D_h}{\mu}
 \end{equation}
 
-Additionally, the geometry must be defined on a computational mesh which includes proper boundary conditions, such as inlet, outlet, and wall boundaries. The meshing tool, ICEM-CFD, is utilized here to produce the computational meshes using a blocking strategy. Nek5000 requires the use of hexahedral elements for the computation, but supports the conversion meshes containing tetrahedral and prismatic elements through a custom tet-to-hex converter~\citep{Yuan2020}. Each hexahedral element can be further discretized at run-time using the GLL quadrature based on the selected polynomial approximation order. This allows mesh convergence to be performed by increasing the polynomial order, which is also known as p-type refinement. This strategy is used to ensure the results presented are mesh independent. 
+Additionally, the geometry must be defined on a computational mesh which includes proper boundary conditions, such as inlet, outlet, and wall boundaries.
+The meshing tool, ICEM-CFD, is utilized here to produce the computational meshes using a blocking strategy.
+Nek5000 requires the use of hexahedral elements for the computation, but supports the conversion meshes containing tetrahedral and prismatic elements through a custom tet-to-hex converter~\citep{Yuan2020}.
+Each hexahedral element can be further discretized at run-time using the GLL quadrature based on the selected polynomial approximation order.
+This allows mesh convergence to be performed by increasing the polynomial order, which is also known as p-type refinement.
+This strategy is used to ensure the results presented are mesh independent.
 
 \subsection{The regularized $\lowercase{k}-\omega$ RANS model}
 \label{sec:nek2}
 
-The $k-\omega$ model is among the most commonly used RANS turbulence models, which is known to offer better performance for boundary layer, free shear flows compared to other alternatives like $k-\epsilon$ class of models. However, a main drawback associated is the wall boundary condition for $\omega$. According to asymptotic estimates, the value of $\omega$ in the standard $k-\omega$ model becomes infinite at solid walls. The typical treatment is to specify the value of $\omega$ to some large value at grid points on the walls. Although this approach may increase stability, it causes the numerical solution to be sensitive to near-wall grid spacing~\citep{Wilcox1998}. The inability of this approach to provide a grid-independent result aside, such treatment can be problematic in high-order approaches. For the spectral-element method used here, derivative operators are not local in character and assigning an arbitrarily large value at the wall can lead to numerical oscillations. In response, a novel regularized version of the standard $k-\omega$ turbulence model has been recently developed~\citep{Tomboulides2018}. In the regularized formulation, the overall value of $\omega$ is defined as the sum of the value of $\omega$ on the wall ($\omega_W$) and a correction term ($\omega^\prime$). 
+The $k-\omega$ model is among the most commonly used RANS turbulence models, which is known to offer better performance for boundary layer, free shear flows compared to other alternatives like $k-\epsilon$ class of models.
+However, a main drawback associated is the wall boundary condition for $\omega$.
+According to asymptotic estimates, the value of $\omega$ in the standard $k-\omega$ model becomes infinite at solid walls.
+The typical treatment is to specify the value of $\omega$ to some large value at grid points on the walls.
+Although this approach may increase stability, it causes the numerical solution to be sensitive to near-wall grid spacing~\citep{Wilcox1998}.
+The inability of this approach to provide a grid-independent result aside, such treatment can be problematic in high-order approaches.
+For the spectral-element method used here, derivative operators are not local in character and assigning an arbitrarily large value at the wall can lead to numerical oscillations.
+In response, a novel regularized version of the standard $k-\omega$ turbulence model has been recently developed~\citep{Tomboulides2018}.
+In the regularized formulation, the overall value of $\omega$ is defined as the sum of the value of $\omega$ on the wall ($\omega_W$) and a correction term ($\omega^\prime$).
 
 \begin{equation}
     \omega = \omega^\prime + \omega_W 
 \end{equation}
 
-The singular asymptotic behavior can be then subtracted from the solution. As a result, we can solve for a quantity $\omega^\prime$ that is finite everywhere in the domain. A partial differential equation (PDE) is constructed for the correction term
+The singular asymptotic behavior can be then subtracted from the solution.
+As a result, we can solve for a quantity $\omega^\prime$ that is finite everywhere in the domain.
+A partial differential equation (PDE) is constructed for the correction term
 
 \begin{equation}
 \label{eqn:omega_trans}
 \rho \left( \frac{\partial \omega^\prime}{\partial t} + \bf{v} \cdot \bf{\nabla}  \omega^\prime \right) =  \bf{\nabla} \cdot \left[ (\mu+\frac{\mu_t}{\sigma_\omega } ) \bf{\nabla} \omega^\prime \right] + G_{\omega} - Y_{\omega} + S_{\omega_W}
 \end{equation}
 
-where $G_{\omega}$, $Y_{\omega}$ and $S_{\omega_W}$ represent the production, the destruction and the extra source terms resulting from the regularization respectively. All source terms in Eq. (\ref{eqn:omega_trans}) are either able to reach a finite limit at walls or cancelled out. Interested readers are referred to~\cite{Tomboulides2018} for a comprehensive discussion of all source terms involved. Meanwhile, it is worthwhile to mention that the derivation of source term $S_{\omega_W}$ assumes a asymptotic relationship of $\omega_W$ near the wall, which is given by 
+where $G_{\omega}$, $Y_{\omega}$ and $S_{\omega_W}$ represent the production, the destruction and the extra source terms resulting from the regularization respectively.
+All source terms in Eq.~(\ref{eqn:omega_trans}) are either able to reach a finite limit at walls or cancelled out.
+Interested readers are referred to~\cite{Tomboulides2018} for a comprehensive discussion of all source terms involved.
+Meanwhile, it is worthwhile to mention that the derivation of source term $S_{\omega_W}$ assumes a asymptotic relationship of $\omega_W$ near the wall, which is given by 
 
 \begin{equation}
     \omega_W = \frac{a \nu}{\beta_0 y_w^2} 
 \end{equation}
 
-where $y_w$ is the distance from the nearest wall and $\beta_0$ is determined from the particular model implementation. The asymptotically correct value of the constant a in the expression above is 6 according to~\cite{Wilcox1998}. Through regularizing the turbulence dissipation frequency in this manner, the transport equation has the convenient Dirichlet wall-boundary condition of $\omega^\prime = 0$, in contrast to the grid-dependent boundary conditions recommended for the non-regularized formulations. This is particularly useful for wall-resolved variants of the $k-\omega$ model and allows the regularized implementation to achieve spectral convergence for increasing mesh resolution. 
+where $y_w$ is the distance from the nearest wall and $\beta_0$ is determined from the particular model implementation.
+The asymptotically correct value of the constant a in the expression above is 6 according to~\cite{Wilcox1998}.
+Through regularizing the turbulence dissipation frequency in this manner, the transport equation has the convenient Dirichlet wall-boundary condition of $\omega^\prime = 0$, in contrast to the grid-dependent boundary conditions recommended for the non-regularized formulations.
+This is particularly useful for wall-resolved variants of the $k-\omega$ model and allows the regularized implementation to achieve spectral convergence for increasing mesh resolution.
 
 The regularized formulation for omega is used with a standard formulation for the turbulent kinetic energy transport equation~\citep{Wilcox1988}
 
@@ -69,4 +103,10 @@ The regularized $k-\omega$ model has been demonstrated to produce results consis
 \subsection{The NekNek coupling}
 \label{sec:nek3}
 
-The ability to decompose a global domain into separate, but overlapping, subdomains greatly eases mesh generation procedures and increases flexibility of modeling flows with complex geometries. An overlapping mesh methodology has been recently developed in Nek5000, which can allow simultaneous simulation sessions to be carried out for different subdomains and the real-time communication of flow information on the overlapping interface~\citep{Merrill2016}. This novel coupling framework is referred herein as NekNek. The spectral accuracy is maintained for spatial discretization due to a spectral interpolation at interface boundaries using solution approximations in an $N^th$-order polynomial space on GLL points. The global high-order (up to a third) temporal accuracy of the flow solver is also maintained with few, or no, iterations using solutions at previous time steps to form explicit extrapolation approximation at the interface. The NekNek coupling capability has been previously verified in some canonical problems, such as the three dimensional fully-developed turbulent pipe flow with other physical and computational experiments. 
+The ability to decompose a global domain into separate, but overlapping, subdomains greatly eases mesh generation procedures and increases flexibility of modeling flows with complex geometries.
+An overlapping mesh methodology has been recently developed in Nek5000, which can allow simultaneous simulation sessions to be carried out for different subdomains and the real-time communication of flow information on the overlapping interface~\citep{Merrill2016}.
+This novel coupling framework is referred herein as NekNek.
+The spectral accuracy is maintained for spatial discretization due to a spectral interpolation at interface boundaries using solution approximations in an $N^th$-order polynomial space on GLL points.
+The global high-order (up to a third) temporal accuracy of the flow solver is also maintained with few, or no, iterations using solutions at previous time steps to form explicit extrapolation approximation at the interface.
+The NekNek coupling capability has been previously verified in some canonical problems, such as the three dimensional fully-developed turbulent pipe flow with other physical and computational experiments.
+

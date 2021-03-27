@@ -107,7 +107,18 @@
 
 \section*{ABSTRACT}
 
-To support the design of advanced Sodium-cooled Fast Reactor (SFR), a series of computational fluid dynamic (CFD) simulations are performed to investigate the pressure change along various flow passages in the proposed SFR system. The simulations are carried out with the state-of-the-art spectral element flow solver, Nek5000. Two specific case studies are presented in this paper: the flow exiting the axial neutron reflector channels and the flow entering the fuel pin bundle. Due to the high Reynolds numbers expected, RANS methods are necessary. A newly developed regularized $k-\omega$ RANS model is adopted in the related CFD calculations. The first case study explores the effect of Reynolds number on the pressure change when flow exiting the reflector channels. The pressure change in this case has two major contributors: the change due to wall friction and the Bernoulli effect. It is found out that the non-dimensional pressure change (i.e. pressure loss coefficient) reduces slightly as the Reynolds number increases. In the second case study, the advanced NekNek coupling capability is tested where an integral domain can be divided into multiple subdomains with an overlapping interface for flow information communication. The preliminary results obtained so far confirmed the consistency between the NekNek results and those produced by regular Nek5000 simulation. The presented work is part of the broader effort to apply cutting-edge CFD techniques in addressing the advanced nuclear reactor design challenges.
+To support the design of advanced Sodium-cooled Fast Reactor (SFR), a series of computational fluid dynamic (CFD) simulations are performed to investigate the pressure change along various flow passages in the proposed SFR system. 
+The simulations are carried out with the state-of-the-art spectral element flow solver, Nek5000. 
+Two specific case studies are presented in this paper: the flow exiting the axial neutron reflector channels and the flow entering the fuel pin bundle. 
+Due to the high Reynolds numbers expected, RANS methods are necessary. 
+A newly developed regularized $k-\omega$\ RANS model is adopted in the related CFD calculations. 
+The first case study explores the effect of Reynolds number on the pressure change when flow exiting the reflector channels. 
+The pressure change in this case has two major contributors: the change due to wall friction and the Bernoulli effect. 
+It is found out that the non-dimensional pressure change (i.e. 
+pressure loss coefficient) reduces slightly as the Reynolds number increases. 
+In the second case study, the advanced NekNek coupling capability is tested where an integral domain can be divided into multiple subdomains with an overlapping interface for flow information communication. 
+The preliminary results obtained so far confirmed the consistency between the NekNek results and those produced by regular Nek5000 simulation. 
+The presented work is part of the broader effort to apply cutting-edge CFD techniques in addressing the advanced nuclear reactor design challenges.
 
 
 \begin{flushleft}
@@ -117,9 +128,26 @@ To support the design of advanced Sodium-cooled Fast Reactor (SFR), a series of 
 
 \section{INTRODUCTION}
 
-Nuclear energy is the most reliable emission-free energy source currently available. To continue harnessing the benefits of nuclear energy and modernize its essential nuclear energy research and development infrastructure, the U.S. Department of Energy (DOE) has launched various programs to stimulate the development of advanced reactor technologies. Among many advanced reactor concepts, the sodium-cooled fast reactor (SFR) stands out with a high fuel efficiency and low output of long half-life radioactive nuclear wastes~\citep{Shaver2019a}. Its design will rely on well-tested, verified, and validated methods as well as leveraging advanced high-fidelity simulation capabilities to bridge existing gaps or to reduce uncertainties~\citep{Shaver2019b}. 
+Nuclear energy is the most reliable emission-free energy source currently available. 
+To continue harnessing the benefits of nuclear energy and modernize its essential nuclear energy research and development infrastructure, the U.S.\ Department of Energy (DOE) has launched various programs to stimulate the development of advanced reactor technologies. 
+Among many advanced reactor concepts, the sodium-cooled fast reactor (SFR) stands out with a high fuel efficiency and low output of long half-life radioactive nuclear wastes~\citep{Shaver2019a}. 
+Its design will rely on well-tested, verified, and validated methods as well as leveraging advanced high-fidelity simulation capabilities to bridge existing gaps or to reduce uncertainties~\citep{Shaver2019b}. 
 
-In this paper, computational fluid dynamics (CFD) is employed to perform thermal hydraulic assessment for various flow passages. Knowing these engineering insights (e.g. friction factor or loss coefficient) in the reactor component is important to ensure adequacy of the primary pumps and properly assess the transient behavior of the reactor. The advanced spectral element CFD code Nek5000 is used for this assessment, which has a long history of applications in nuclear energy research~\citep{Merzari2012,Fick2017,Shaver2019,Yildiz2019,Merzari2019}. Specifically, the pressure change is investigated herein. Two specific case studies are presented in this paper: the flow exiting the axial neutron reflector channels and the flow entering the fuel pin bundle. Due to the high density of liquid sodium and the flow rates required to provide adequate cooling to any reactor, the Reynolds numbers anticipated are quite large ($10^6$). It is therefore necessary to use a RANS approach to model turbulence as the computational expense associated with resolving the turbulent fluctuations in a high-fidelity model would be prohibitively large. A newly developed regularized $k-\omega$ RANS model is adopted in the related Nek5000 calculations. The first case study explores the effect of Reynolds number on the pressure change when flow exiting the reflector channels. The pressure change in this case has two major contributors: the change due to wall friction and Bernoulli effect. The non-dimensional pressure change is found out to reduce slightly as the Reynolds number increases. The second case study tested the NekNek coupling capability where the pressure change over an integral domain is compared with that from two separate subdomains. The subdomains are coupled at the overlapped interface. The preliminary results obtained so far have confirmed the consistency between the integral domain results simulated by regular Nek5000 framework and the subdomain simulations coupled by NekNek. The rest of the paper is structured as follows: section 2 introduces the numerical methods used in this work; section 3 will focus on the two separate case studies and show how the state-of-the-art CFD can help in studying the related engineering flow problems; the concluding remarks as well as the future work needed are discussed in section 0. 
+In this paper, computational fluid dynamics (CFD) is employed to perform thermal hydraulic assessment for various flow passages. 
+Knowing these engineering insights (e.g.\ friction factor or loss coefficient) in the reactor component is important to ensure adequacy of the primary pumps and properly assess the transient behavior of the reactor. 
+The advanced spectral element CFD code Nek5000 is used for this assessment, which has a long history of applications in nuclear energy research~\citep{Merzari2012,Fick2017,Shaver2019,Yildiz2019,Merzari2019}. 
+Specifically, the pressure change is investigated herein. 
+Two specific case studies are presented in this paper: the flow exiting the axial neutron reflector channels and the flow entering the fuel pin bundle. 
+Due to the high density of liquid sodium and the flow rates required to provide adequate cooling to any reactor, the Reynolds numbers anticipated are quite large ($10^6$). 
+It is therefore necessary to use a RANS approach to model turbulence as the computational expense associated with resolving the turbulent fluctuations in a high-fidelity model would be prohibitively large. 
+A newly developed regularized $k-\omega$ RANS model is adopted in the related Nek5000 calculations. 
+The first case study explores the effect of Reynolds number on the pressure change when flow exiting the reflector channels. 
+The pressure change in this case has two major contributors: the change due to wall friction and Bernoulli effect. 
+The non-dimensional pressure change is found out to reduce slightly as the Reynolds number increases. 
+The second case study tested the NekNek coupling capability where the pressure change over an integral domain is compared with that from two separate subdomains. 
+The subdomains are coupled at the overlapped interface. 
+The preliminary results obtained so far have confirmed the consistency between the integral domain results simulated by regular Nek5000 framework and the subdomain simulations coupled by NekNek. 
+The rest of the paper is structured as follows: section 2 introduces the numerical methods used in this work; section 3 will focus on the two separate case studies and show how the state-of-the-art CFD can help in studying the related engineering flow problems; the concluding remarks as well as the future work needed are discussed in section 0. 
 
 
 %%---------------------------------------------------------------------------%%

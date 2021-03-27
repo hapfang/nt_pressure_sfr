@@ -3,7 +3,8 @@
 \label{sec:msm}
 
 Though Nek5000 is able to simulate flows in complex engineering geometries, such as \cite{Busco2019}, the objective here is to model the effect of SGMV on fluid flow without the need of an elaborate body-fitted mesh.
-This approach would significantly reduce the number of elements (i.e., degrees of freedom) required for domain discretization and the per-subchannel computational cost. In doing so, one can greatly expand the computational domain size (up to the full core) and study the system behavior concerning the neutronics and thermal-hydraulics.
+This approach would significantly reduce the number of elements (i.e., degrees of freedom) required for domain discretization and the per-subchannel computational cost.
+In doing so, one can greatly expand the computational domain size (up to the full core) and study the system behavior concerning the neutronics and thermal-hydraulics.
 Specifically, the modeling of SGMV effect here is achieved by implementing novel 3-D momentum sources to reproduce the macroscopic impact of SGMV on the coolant flow, including the magnitudes of flow swirling, inter-subchannel mixing as well as the pressure loss.
 The validity of this reduced-order modeling approach is further assessed by comparing the corresponding results with those from reference LES calculations for a 5x5 pin bundle geometry with the spacer grid and mixing vanes explicitly represented.
 The current work is a crucial stepping stone to fully leverage the supercomputing and cutting-edge CFD techniques in addressing grand challenges in nuclear engineering.
@@ -15,32 +16,44 @@ The current work is a crucial stepping stone to fully leverage the supercomputin
 The nuclear fuel rods are generally arranged together in a triangle or square pattern with supporting structures, such as the spacer grid, to hold them in place and limit vibrations.
 The mixing vanes are installed on some of the spacer grids to further promote the turbulence mixing, and thus improve the convective heat transfer from the fuel rod surface to the coolant.
 The specific vanes modeled here are the split-type vanes.
-The existence of the spacer grid and mixing vanes generates complex flow structures inside the core. Two major macroscopic effects are targeted in this work:
+The existence of the spacer grid and mixing vanes generates complex flow structures inside the core.
+Two major macroscopic effects are targeted in this work:
 (i) the magnitude of lateral flow mixing and associated decay rate downstream of the SGMV region;
 (ii) the streamwise pressure/friction loss due to the SGMV.
 The flow mixing has a direct impact on the convective heat transfer performance (i.e., local Nusselt number) while the knowledge of pressure loss caused by SGMV can help to better predict the required pump head to drive the coolant flow under various operating or accident conditions.
 As shown in Figure~\ref{fig:sgmvcad}, a 5x5 fuel rod bundle geometry is simulated using LES with the explicit representation of detailed geometric structures including the spacer grid and mixing vanes.
-Four Reynolds numbers are investigated: 10,000, 20,000, 40,000 and 80,000. It is worthwhile to mention that the target Reynolds number inside the SMR core is about 78,300 according to the NuScale SMR design specifications~\citep{NuScale2018,Romano2020}. 
-The discretization of the fuel bundle geometry results in 3.24 million spectral elements, which corresponds to 699.84 million grid points with a polynomial order of 6. The 5x5 rod bundle has a length of 9 hydraulic diameters before the spacer grid and 16 hydraulic diameters downstream from the vanes region. The no-slip condition is given to all wall surfaces.
-A recycling zone of 4 hydraulic diameters is specified at the inlet to generate a fully developed turbulent flow condition.  
+Four Reynolds numbers are investigated: 10,000, 20,000, 40,000 and 80,000.
+It is worthwhile to mention that the target Reynolds number inside the SMR core is about 78,300 according to the NuScale SMR design specifications~\citep{NuScale2018,Romano2020}.
+
+The discretization of the fuel bundle geometry results in 3.24 million spectral elements, which corresponds to 699.84 million grid points with a polynomial order of 6.
+The 5x5 rod bundle has a length of 9 hydraulic diameters before the spacer grid and 16 hydraulic diameters downstream from the vanes region.
+The no-slip condition is given to all wall surfaces.
+A recycling zone of 4 hydraulic diameters is specified at the inlet to generate a fully developed turbulent flow condition.
 The simulations were carried out on the IBM Blue Gene/Q Mira supercomputer at Argonne National Laboratory (ANL).
 Corresponding results will be used to develop/calibrate the momentum sources in RANS calculations that can reproduce the macroscopic effects induced by the SGMV on the coolant flow.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.5\textwidth]{./figures/3DModel_of_SGMV.png}
-\caption{The structure of spacer grid and mixing vanes and a 5x5 fuel rod bundle. }
+\caption{The structure of spacer grid and mixing vanes and a 5x5 fuel rod bundle.}
 \label{fig:sgmvcad}
 \end{figure}
 
-The development of momentum sources relies on lightweight test cases with quick turnaround time. As shown in Figure~\ref{fig:model2x2}, a 2x2 bundle is created for that purpose, which is the conduit bounded by 9 neighboring fuel pins. The subchannel pitch-to-diameter ratio is 1.33, where the pitch is defined as the distance of two fuel pin centers and the pin diameter is 9.50 mm. The 2x2 bundle has a span of 10 hydraulic diameters. Inflow and outflow conditions are specified for the channel inlet and outflow. Periodic boundary condition is applied to transverse faces while no-slip wall condition applied to all fuel rod surfaces. The computational grid of 2x2 bundle case consists of 59.14 K elements. 
+The development of momentum sources relies on lightweight test cases with quick turnaround time.
+As shown in Figure~\ref{fig:model2x2}, a 2x2 bundle is created for that purpose, which is the conduit bounded by 9 neighboring fuel pins.
+The subchannel pitch-to-diameter ratio is 1.33, where the pitch is defined as the distance of two fuel pin centers and the pin diameter is 9.50 mm.
+The 2x2 bundle has a span of 10 hydraulic diameters.
+Inflow and outflow conditions are specified for the channel inlet and outflow.
+Periodic boundary condition is applied to transverse faces while no-slip wall condition applied to all fuel rod surfaces.
+The computational grid of 2x2 bundle case consists of 59.14 K elements.
+
 \hl{A dedicated meshing study shows that the element count per subchannel and per hydraulic diameter in the RANS case can be further reduced to the 1/21 of that in the detailed LES case without suffering significant accuracy degradation.}
 Once the momentum sources are successfully tested in the 2x2 bundle, the next step is to extend the testing geometry to larger domains, and eventually to the full core.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.5\textwidth]{./figures/3DModel_of_bundle2x2.png}
-\caption{A 2x2 subchannel geometry for momentum source development and testing. }
+\caption{A 2x2 subchannel geometry for momentum source development and testing.}
 \label{fig:model2x2}
 \end{figure}
 
@@ -59,20 +72,24 @@ $r$ is the distance from any point to the reference location, that is, the subch
 $\theta$ is the angle between the distance vector and positive x direction and
 \hl{$\tau_\text{coupling}$ is the coupling time scale, a tunable model constant that has a typical value of about 200 times the simulation time step size.
 The angular velocity $\eta(r)$ has a smooth radial distribution which is zero at the subchannel centerline and returns to zero close to the rod surface.
-In a prototypical fuel rod assembly, the deflection of split-type mixing vanes follow an alternative pattern for neighboring subchannels.} (Figure~\ref{fig:sgmvcad}). 
+In a prototypical fuel rod assembly, the deflection of split-type mixing vanes follow an alternative pattern for neighboring subchannels.} (Figure~\ref{fig:sgmvcad}).
+
 \hl{This arrangement is critical to generate the desired cross flow among the subchannels.
-To better reflect the corresponding design, there is only one lateral momentum source enabled in each subchannel. For example, when $S_x$ is on in one specific subchannel, $S_y$ is off in the same subchannel, and vice versa. The same lateral momentum source ($S_x$ or $S_y$) is specified only for the consecutive subchannels along diagonal lines.} 
+To better reflect the corresponding design, there is only one lateral momentum source enabled in each subchannel.
+For example, when $S_x$ is on in one specific subchannel, $S_y$ is off in the same subchannel, and vice versa.
+The same lateral momentum source ($S_x$ or $S_y$) is specified only for the consecutive subchannels along diagonal lines.} 
 The source terms are considered as additions to the body force term in momentum equation, which are used to generate the approximated large-scale lateral flow movement and pressure drop.
 The large-scale flow movement on the cross-sectional plane is further decomposed into two parts: the flow swirling within a specific subchannel and the crossflow mixing among neighboring subchannels.
 Following the examples of \cite{Chang2014},
-a swirling factor ($F_\text{swirl}$) and a mixing factor ($F_\text{mix}$) are defined to quantify the swirling and inter-subchannel crossflow, respectively. They are the basic parameters for lateral momentum source calibration. 
+a swirling factor ($F_\text{swirl}$) and a mixing factor ($F_\text{mix}$) are defined to quantify the swirling and inter-subchannel crossflow, respectively.
+They are the basic parameters for lateral momentum source calibration.
 The absolute value of normalized velocity is averaged over the diagonal lines to obtain the swirling factor and over the gap lines to obtain the mixing factor (Figure~\ref{fig:sblines}).
 
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.5\textwidth]{./figures/Analysis_locations_in_a_subchannel.png}
-\caption{The line locations to obtain swirling and mixing factors. Blue arrows indicate the deflection of the simulated mixing vanes. }
+\caption{The line locations to obtain swirling and mixing factors. Blue arrows indicate the deflection of the simulated mixing vanes.}
 \label{fig:sblines}
 \end{figure}
 
@@ -96,12 +113,13 @@ The instantaneous velocity fields are shown in Figure~\ref{fig:velles}, from whi
 The LES cases with higher Reynolds numbers are restarted from the turbulence field fully developed at a lower Reynolds number.
 In other words, the flow solutions obtained at a lower Re serve as the initial condition for the cases at higher Re, which results in significant savings in terms of computing hours.
 Time-averaged first and second order flow quantities are gathered from all cases.
-The subchannel highlighted with a red box is selected for further post-processing. The swirling and mixing factors as well as the pressure drop are extracted from LES  solutions as the reference to calibrate the corresponding RANS momentum sources.
+The subchannel highlighted with a red box is selected for further post-processing.
+The swirling and mixing factors as well as the pressure drop are extracted from LES  solutions as the reference to calibrate the corresponding RANS momentum sources.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.5\textwidth]{./figures/LES_solutions_bundle5x5.png}
-\caption{The instantaneous velocity fields at (a) a downstream location after SGMV, (b) the onset of mixing vanes region. The subchannel selected for post-processing is highlighted with a red box. }
+\caption{The instantaneous velocity fields at (a) a downstream location after SGMV, (b) the onset of mixing vanes region. The subchannel selected for post-processing is highlighted with a red box.}
 \label{fig:velles}
 \end{figure}
 
@@ -112,7 +130,7 @@ As illustrated in Figure~\ref{fig:streamline}, the momentum sources applied clos
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.8\textwidth]{./figures/RANS_streamlines_bundle2x2.png}
-\caption{Streamlines revealing the flow rotation generated by the momentum sources. }
+\caption{Streamlines revealing the flow rotation generated by the momentum sources.}
 \label{fig:streamline}
 \end{figure}
 
@@ -122,43 +140,59 @@ The comparisons of swirling and mixing factor are presented in Figure~\ref{fig:f
 It is clearly demonstrated that the RANS momentum sources developed can successfully reproduce the time-averaged macroscale flow physics revealed by the high-fidelity LES reference.
 The momentum sources not only produce the equivalent magnitude of flow swirling and inter-subchannel crossflow, but also capture the consistent decay trend as the flow moves downstream from the mixing vanes.
 As shown in Figure~\ref{fig:fswirl}, due to the mixing vanes deflection, the swirling factors estimated for two perpendicular diagonal lines are noticeably different, and this pattern is well represented by the lateral momentum sources.
-On the other hand, the difference in mixing factors across the two gap lines is relatively smaller. Such a difference is not captured in the RANS calculation and the difference in mixing factors across two perpendicular gap lines is negligible.
-Nevertheless, the RANS mixing factor results are in very good agreement with the averaged value from LES reference. 
-For both the swirling and mixing factors, larger discrepancies are noticed right after the momentum source application region (within 1 to 2 hydraulic diameters). It is somewhat expected because the local geometric effect will be dominant as the coolant flow exits the spacer grid and mixing vanes. 
+On the other hand, the difference in mixing factors across the two gap lines is relatively smaller.
+Such a difference is not captured in the RANS calculation and the difference in mixing factors across two perpendicular gap lines is negligible.
+Nevertheless, the RANS mixing factor results are in very good agreement with the averaged value from LES reference.
+For both the swirling and mixing factors, larger discrepancies are noticed right after the momentum source application region (within 1 to 2 hydraulic diameters).
+It is somewhat expected because the local geometric effect will be dominant as the coolant flow exits the spacer grid and mixing vanes.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.75\textwidth]{./figures/Results_swirling_factor.png}
-\caption{Comparison of the swirling factors from LES reference and the RANS test with momentum sources at Re = 10,000. }
+\caption{Comparison of the swirling factors from LES reference and the RANS test with momentum sources at Re = 10,000.}
 \label{fig:fswirl}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.75\textwidth]{./figures/Results_mixing_factor.png}
-\caption{Comparison of the mixing factors from LES reference and the RANS test with momentum sources at Re = 10,000. }
+\caption{Comparison of the mixing factors from LES reference and the RANS test with momentum sources at Re = 10,000.}
 \label{fig:fmix}
 \end{figure}
 
-Besides the swirling and mixing factors, the streamwise pressure loss is another key FOM to quantify the impact of spacer grid and mixing vanes on the coolant flow. Due to the blockage and surface friction, the existence of SGMV would significantly increase the pressure drop, which means a larger pump head will be required to drive the coolant flow. It is also worthwhile to mention that for the incompressible CFD simulations, it is the pressure gradient that dictates the flow physics. As a result, it is intended here to match/reproduce the non-dimensional pressure drop caused by the SGMV rather than the actual pressure value. As shown in Figure~\ref{fig:presloss}, the LES reference solution reports a pressure drop of 1.282 and the RANS test case gives a very similar value of 1.286. Note that the pressure at the end of mixing vanes region ($\Delta/D_h$=0) is set to zero, and the pressure elsewhere is shifted accordingly to preserve the same pressure difference. Similar to what we have noticed in Figure~\ref{fig:fswirl} and Figure~\ref{fig:fmix}, there is some deviation between the RANS results and LES reference within 2--3 hydraulic diameters right after the mixing vanes. The higher pressure observed in LES is attributed to the Bernoulli effect as the cross-sectional area increases when flow exits the SGMV region.  Having said that, the pressure gradient further downstream is well captured, that is, the slope of the pressure decrease is close between the RANS (-0.0203) and LES (-0.0184).
+Besides the swirling and mixing factors, the streamwise pressure loss is another key FOM to quantify the impact of spacer grid and mixing vanes on the coolant flow.
+Due to the blockage and surface friction, the existence of SGMV would significantly increase the pressure drop, which means a larger pump head will be required to drive the coolant flow.
+It is also worthwhile to mention that for the incompressible CFD simulations, it is the pressure gradient that dictates the flow physics.
+As a result, it is intended here to match/reproduce the non-dimensional pressure drop caused by the SGMV rather than the actual pressure value.
+As shown in Figure~\ref{fig:presloss}, the LES reference solution reports a pressure drop of 1.282 and the RANS test case gives a very similar value of 1.286.
+Note that the pressure at the end of mixing vanes region ($\Delta/D_h$=0) is set to zero, and the pressure elsewhere is shifted accordingly to preserve the same pressure difference.
+Similar to what we have noticed in Figure~\ref{fig:fswirl} and Figure~\ref{fig:fmix}, there is some deviation between the RANS results and LES reference within 2--3 hydraulic diameters right after the mixing vanes.
+The higher pressure observed in LES is attributed to the Bernoulli effect as the cross-sectional area increases when flow exits the SGMV region.
+ Having said that, the pressure gradient further downstream is well captured, that is, the slope of the pressure decrease is close between the RANS (-0.0203) and LES (-0.0184).
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.75\textwidth]{./figures/Results_pressure_loss.png}
-\caption{Comparison of the pressure drop from LES reference and the RANS test with momentum sources at Re = 10,000. }
+\caption{Comparison of the pressure drop from LES reference and the RANS test with momentum sources at Re = 10,000.}
 \label{fig:presloss}
 \end{figure}
 
-The similar calibration has also been carried out for all other Reynolds numbers, and agreements are obtained between the LES reference results and the RANS results with momentum sources. More details about the model application in the full core models will be presented in Section~\ref{sec:discuss}.
+The similar calibration has also been carried out for all other Reynolds numbers, and agreements are obtained between the LES reference results and the RANS results with momentum sources.
+More details about the model application in the full core models will be presented in Section~\ref{sec:discuss}.
 
 \subsection{Grid sensitivity study}
 \label{sec:msm3}
 
-A grid sensitivity study was conducted to understand how the momentum sources would be affected by the numerical discretization. This is achieved by changing the polynomial approximation order in Nek5000 simulations, also \hl{known} as a $p$-type mesh study, which is equivalent to $h$-type, or element-based, refinement studies~\citep{Shaver2019}. 
-A series of RANS simulations were carried out with the momentum sources at 3rd-, 5th-, 7th-, 9th-, 11th- and 13th-orders. These cases are denoted as p3, p5, and up to p13 accordingly. The steady-state flow solutions are post-processed to obtain the swirling and mixing factors discussed above. 
-As shown in \hl{Figure}~\ref{fig:sensitivity}, for both parameters, the case p3 gives the largest uncertainty/deviation while p13 the least compared to the LES reference data. The rest of mesh study cases all fall somewhere in between with a converging trend to the results at the highest polynomial order (i.e. $p=13$).
-In other words, the momentum sources developed are demonstrated to have the desired grid convergence characteristics. 
-The $p=7$ is adopted in production calculations, which balances the solution accuracy and computational efficiency. 
+A grid sensitivity study was conducted to understand how the momentum sources would be affected by the numerical discretization.
+This is achieved by changing the polynomial approximation order in Nek5000 simulations, also \hl{known} as a $p$-type mesh study, which is equivalent to $h$-type, or element-based, refinement studies~\citep{Shaver2019}.
+A series of RANS simulations were carried out with the momentum sources at 3rd-, 5th-, 7th-, 9th-, 11th- and 13th-orders.
+These cases are denoted as p3, p5, and up to p13 accordingly.
+The steady-state flow solutions are post-processed to obtain the swirling and mixing factors discussed above.
+As shown in \hl{Figure}~\ref{fig:sensitivity}, for both parameters, the case p3 gives the largest uncertainty/deviation while p13 the least compared to the LES reference data.
+The rest of mesh study cases all fall somewhere in between with a converging trend to the results at the highest polynomial order (i.e.
+$p=13$).
+In other words, the momentum sources developed are demonstrated to have the desired grid convergence characteristics.
+The $p=7$ is adopted in production calculations, which balances the solution accuracy and computational efficiency.
 
 \begin{figure}
 \centering
