@@ -1,9 +1,71 @@
-@inproceedings{Shaver2019a,
-address = {Minneapolis, MN},
-author = {Shaver, D.R. and Feng, B. and Merzari, E. and Heidet, F.},
-booktitle = {2019 ANS Annual Meeting},
-publisher = {American Nuclear Society},
-title = {{Demonstration of the CFD Code Nek5000 for Molten Salt Applications}},
+@article{Conner2010,
+author = {Conner, Michael E and Baglietto, Emilio and Elmahdi, Abdelaziz M},
+journal = {Nuclear Engineering and Design},
+mendeley-groups = {Preparation/NED{\_}202010},
+number = {9},
+pages = {2088--2095},
+title = {{CFD methodology and validation for single-phase flow in PWR fuel assemblies}},
+volume = {240},
+year = {2010}
+}
+
+@article{Busco2019,
+abstract = {Invariant analysis of the Reynolds stress tensor anisotropy can give an accurate and deep intuitive understanding of the turbulent structure of a turbulent flow. Lumley's triangle has proven to be a powerful representation of the invariant analysis of the second-order statistics collection provided by the Reynolds stress tensor. In the present work the spectral element code Nek5000 has been used to investigate the turbulent structure of the flow across a pressurized water reactor spacer grid with split type mixing vanes. Wall-resolved large eddy simulation of the flow in a prototypical rod bundle geometry at Re = 14,000 and P/D = 1.32 are performed and validated against particle image velocimetry data. The results are then used to perform an in-depth invariant analysis. The results show a reorganization of the Reynolds stresses components in the downstream region of the spacer grid. The mixing vanes orientation produces a symmetric behavior between sub-channels. The turbulent structure in the fully developed region has the typical behavior of fully-developed channel flow turbulence. When averaging the state across regions of the sub-channels, we observed a transition from disk-like turbulence in the mixing vanes region to rod-like turbulence in the fully developed region.},
+author = {Busco, Giacomo and Merzari, Elia and Hassan, Yassin A.},
+doi = {10.1016/J.IJHEATFLUIDFLOW.2019.04.006},
+issn = {0142-727X},
+journal = {International Journal of Heat and Fluid Flow},
+mendeley-groups = {Preparation/NED{\_}202010},
+month = {jun},
+pages = {144--156},
+publisher = {Elsevier},
+title = {{Invariant analysis of the Reynolds stress tensor for a nuclear fuel assembly with spacer grid and split type vanes}},
+url = {https://www.sciencedirect.com/science/article/pii/S0142727X19300682},
+volume = {77},
+year = {2019}
+}
+
+@article{Brockmeyer2017,
+abstract = {When constructing an experiment or simulation for flow through a wire-wrapped fuel rod bundle, scientists may utilize a smaller bundle than design in order to minimize material or computational costs. Small bundles may not capture the required flow physics experienced by larger bundles. This paper compares the flow fields through wire-wrapped rod bundles of 19, 37, 61, and 91 pins and investigates the ability of each to capture the relevant physics of a larger bundle. For model verification, the SST k-$\omega$ and elliptic blending k-∊ RANS models were compared against an LES simulation of the 19 pin domain, finding both RANS turbulent models capable for the given geometry. The central subchannel transverse velocity and inter-channel mass exchange for each bundle was compared, revealing a strong dependence of inter-channel mixing on the bundle size. Furthermore, analysis of the inter-channel mass exchange for subchannels at a varying distance from the surrounding shroud revealed than the mass exchange as a function of height is strongly tied to distance from the wall, with a slight adjustment in magnitude for the bundle size. The asymmetrical aspect of the wall effect was observed, revealing that the outside 2 or 3 rings of subchannels experience a large deviation from the characteristic subchannel behavior, but the central subchannels of the 37, 61, and 91 pin bundles are largely isolated from the asymmetric wall effect. Based on these findings the authors recommend a 37 pin bundle as the minimum surrogate for a larger bundle, and 61 pins as the preferred bundle size.},
+author = {Brockmeyer, Landon and Carasik, Lane B and Merzari, Elia and Hassan, Yassin},
+doi = {https://doi.org/10.1016/j.nucengdes.2017.06.038},
+issn = {0029-5493},
+journal = {Nuclear Engineering and Design},
+keywords = {Bundle size,Verification,Wire-wrapped fuel rod},
+pages = {577--590},
+title = {{Numerical simulations for determination of minimum representative bundle size in wire wrapped tube bundles}},
+url = {http://www.sciencedirect.com/science/article/pii/S0029549317303084},
+volume = {322},
+year = {2017}
+}
+
+@article{Rouch2014,
+abstract = {A thermal–hydraulics study of the core of the Molten Salt Fast Reactor (MSFR) is presented. The numerical simulations were carried-out using a Computation Fluid Dynamic code. The main objectives of the thermal–hydraulics studies are to design the core cavity walls in order to increase the overall flow mixing and to reduce the temperature peaking factors in the salt and on the core walls. The results of the CFD simulations show that for the chosen core design acceptable temperature distributions can be obtained by using a curved core cavity shape, inlets and outlets. The hot spot temperature is less than 10°C above the average core outlet temperature and is located in the centre of the top wall of the core. The results show also a moderate level of sensitivity to the working point.},
+author = {Rouch, H and Geoffroy, O and Rubiolo, P and Laureau, A and Brovchenko, M and Heuer, D and Merle-Lucotte, E},
+doi = {https://doi.org/10.1016/j.anucene.2013.09.012},
+issn = {0306-4549},
+journal = {Annals of Nuclear Energy},
+keywords = {CFD,Core cavity,Fuel salt temperature,MSFR,Molten salt reactor,Thermal–hydraulics design},
+mendeley-groups = {Preparation},
+pages = {449--456},
+title = {{Preliminary thermal–hydraulic core design of the Molten Salt Fast Reactor (MSFR)}},
+url = {http://www.sciencedirect.com/science/article/pii/S0306454913004829},
+volume = {64},
+year = {2014}
+}
+
+@article{Yildiz2019,
+abstract = {The proposition for molten salt and high-temperature gas-cooled reactors has increased the focus on the dynamics and physics in randomly packed pebble beds. Research is being conducted on the validity of these designs as a possible contestant for fourth-generation nuclear power systems. A detailed understanding of the coolant flow behavior is required in order to ensure proper cooling of the reactor core during normal and accident conditions. In order to increase the understanding of the flow through these complex geometries and enhance the accuracy of lower-fidelity modeling, high-fidelity approaches such as direct numerical simulation (DNS) can be utilized. Nek5000, a spectral-element computational fluid dynamics code, was used to develop DNS fluid flow data. The flow domain consisted of 147 pebbles enclosed by a bounding wall. In the work presented, the Reynolds numbers ranged from 430 to 1050 based on the pebble diameter and inlet velocity. Characteristics of the flow domain such as volume averaged porosity, axial porosity, and radial porosity were studied and compared with correlations available in the literature. Friction factors from the DNS results for all Reynolds numbers were compared with correlations in the literature. First- and second-order statistics show good agreement with available experimental data. Turbulence length scales were analyzed in the flow. Reynolds stress anisotropy was characterized by utilizing invariant analysis. Overall, the results of the analysis in the current study provide deeper understanding of the flow behavior and the effect of the wall in packed beds.},
+author = {Yildiz, Mustafa Alper and Botha, Gerrit and Yuan, Haomin and Merzari, Elia and Kurwitz, Richard Cable and Hassan, Dr. Yassin A},
+doi = {10.1115/1.4045439},
+issn = {0098-2202},
+journal = {Journal of Fluids Engineering},
+mendeley-groups = {Preparation/NED{\_}202010},
+month = {nov},
+pages = {041405},
+title = {{Direct Numerical Simulation of the Flow Through a Randomly Packed Pebble Bed}},
+url = {https://doi.org/10.1115/1.4045439},
+volume = {142},
 year = {2019}
 }
 
@@ -61,20 +123,6 @@ volume = {141},
 year = {2019}
 }
 
-@article{Yildiz2019,
-abstract = {AbstractThe helical coil steam generator (HCSG) is a specific type of shell-and-tube heat exchanger known for having a higher heat transfer coefficient than many other designs. For this reason, they are considered in small modular reactor and high temperature reactor designs. Investigation of flow behavior in HCSGs is important for better design. In this paper we present our study for modeling the coolant flow in the primary side of the HCSG. We used Nek5000, an open source, high-order spectral element computational fluid dynamics code developed in Argonne National Laboratory. Nek5000 accepts only hexahedral mesh, which makes the meshing process for the complicated HCSG geometry very challenging. A tetrahedral-to-hexahedral meshing strategy was applied to bypass the geometric complexities. In this study large eddy simulation (LES) was performed at the Reynolds number of 9000 based on the inlet velocity and the tube diameter. The employed subgrid-scale model for LES relies on explicit filtering. First- and second-order statistics were compared to available experimental data. Overall velocity and turbulent kinetic energy showed good agreement with particle image velocimetry data.},
-annote = {doi: 10.1080/00295450.2019.1626176},
-author = {Yildiz, Mustafa Alper and Yuan, Haomin and Merzari, Elia and Hassan, Yassin},
-doi = {10.1080/00295450.2019.1626176},
-issn = {0029-5450},
-journal = {Nuclear Technology},
-month = {jul},
-pages = {1--11},
-publisher = {Taylor & Francis},
-title = {{Numerical Simulation of Isothermal Flow Across Slant Five-Tube Bundle with Spectral Element Method Code Nek5000}},
-url = {https://doi.org/10.1080/00295450.2019.1626176},
-year = {2019}
-}
 
 @article{Merzari2019,
 abstract = {AbstractFlow-induced vibration (FIV) is a widespread problem in energy systems as they rely on fluid movement for energy conversion. Vibrating structures may be damaged as fatigue or wear occur. Given the importance of reliable components in the nuclear industry, FIV has long been a major concern in the safety and operation of nuclear reactors. In particular, nuclear fuel rods and steam generators have been known to suffer from FIV and related failures.In this paper we discuss the use of the computational fluid dynamics code Nek5000 coupled to the structural code Diablo to simulate the flow in helical coil heat exchangers and associated FIV. In particular, one-way coupled calculations are performed, where pressure and tractions data are loaded into the structural model. The main focus of this paper is on validation of this capability. Fluid-only Nek5000 large eddy simulations are first compared against dedicated high-resolution experiments. Then, one-way coupled calculations are performed with Nek5000 and Diablo for two data sets that provide FIV data for validation. These calculations were aimed at simulating available legacy FIV experiments in helical steam generators in the turbulent buffeting regime. In this regime one-way coupling is judged sufficient since the pressure loads do not cause substantial displacements. It is also the most common source of vibration in helical steam generators at the low flows expected in integral pressurized water reactors. We discuss validation of two-way coupled experiments and benchmarks toward the simulation of fluid elastic instability. We briefly discuss the application of these methods to grid-to-rod fretting.},
@@ -210,4 +258,11 @@ title = {{A spectrally accurate method for overlapping grid solution of incompre
 url = {https://www.sciencedirect.com/science/article/pii/S0021999115008050},
 volume = {307},
 year = {2016}
+}
+
+@article{Fang2021,
+author = {Fang, Jun and Shaver, Dillon R. and Min, Misun and Fischer, Paul and Lan, Yu-Hsiang and Rahaman, Ronald and Romano, Paul and Benhamadouche, Sofiane and Hassan, Yassin A. and Kraus, Adam and Merzari, Elia},
+journal = {Nuclear Engineering and Design},
+title = {{Feasibility of Full-Core Pin Resolved CFD Simulations of Small Modular Reactor with Momentum Sources}},
+year = {2021}
 }
